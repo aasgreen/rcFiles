@@ -1,0 +1,194 @@
+
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+mpl.rc('figure',  figsize=(10, 6))
+mpl.rc('image', cmap='gray')
+import numpy as np
+import pandas as pd
+from pandas import DataFrame, Series  # for convenience
+from scipy.optimize import curve_fit
+import glob
+import argparse
+import csv
+import pylab as py
+import re
+
+framerate1 = 1000
+framerate2 = 100
+framerate3 = 450
+framerate4 = 200
+framerate5 = 300
+framerate6 = 450
+mmperpixel=.0041033
+ba = 50
+hbound=800
+lbound=750
+#set upper and lower bounds for the indexing
+
+def fit(x,a,b,c):
+    return a*(np.cosh(b*(x)))**(-2)+c
+#defined the function that will be fit to the data
+
+oldstuff1 = pd.read_csv("/mnt/e/Nozzle Experiment/GoodData/13JUL2017/Film 1/allregions_data.csv")
+stuff1 = oldstuff1.astype({'xnormed':'int','ynormed':'int'})#set x and y values to integers
+oldstuff2 = pd.read_csv("/mnt/e/Nozzle Experiment/GoodData/28SEP2016/Film 2/allregions_data.csv") #import a data set
+stuff2 = oldstuff2.astype({'xnormed':'int','ynormed':'int'})#set x and y values to integers
+oldstuff3 = pd.read_csv("/mnt/e/Nozzle Experiment/GoodData/11APR2017/Film 1/allregions_data.csv") #import a data set
+stuff3 = oldstuff3.astype({'xnormed':'int','ynormed':'int'})#set x and y values to integers
+oldstuff4 = pd.read_csv("/mnt/e/Nozzle Experiment/GoodData/06JUN2017/Film 1/allregions_data.csv") #import a data set
+stuff4 = oldstuff4.astype({'xnormed':'int','ynormed':'int'})#set x and y values to integers
+oldstuff5 = pd.read_csv("/mnt/e/Nozzle Experiment/GoodData/06JUN2017/Film 2/allregions_data.csv") #import a data set
+stuff5 = oldstuff5.astype({'xnormed':'int','ynormed':'int'})#set x and y values to integers
+oldstuff6 = pd.read_csv("/mnt/e/Nozzle Experiment/GoodData/17MAR2017/Film 1/allregions_data.csv") #import a data set
+stuff6 = oldstuff6.astype({'xnormed':'int','ynormed':'int'})#set x and y values to integers
+#import all of the data sets
+                         
+#make 2 y slices x pixles wide
+yslice1 = stuff1[(stuff1.ynormed >=lbound) &(stuff1.ynormed<= hbound)]
+yslice2 = stuff2[(stuff2.ynormed >=lbound) &(stuff2.ynormed<= hbound)]
+yslice3 = stuff3[(stuff3.ynormed >=lbound) &(stuff3.ynormed<= hbound)]
+yslice4 = stuff4[(stuff4.ynormed >=lbound) &(stuff4.ynormed<= hbound)]
+yslice5 = stuff5[(stuff5.ynormed >=lbound) &(stuff5.ynormed<= hbound)]
+yslice6 = stuff6[(stuff6.ynormed >=lbound) &(stuff6.ynormed<= hbound)]
+
+
+#Average repeated values and save the standard deviation in a new column
+def custom_round(x, base=ba):
+    return int(base * round(float(x)/base))#this sets the width of the bins
+
+yslice1['xnormed']=yslice1['xnormed'].apply(lambda x: custom_round(x, base=ba))
+ygrouped1=yslice1.groupby(['xnormed'],as_index=False).agg({'dr':['mean','std']})
+ygrouped1.columns=['xnormed','dr','std']
+y1=ygrouped1.fillna(0) #replace NaNs with 0's
+y1=y1
+
+yslice2['xnormed']=yslice2['xnormed'].apply(lambda x: custom_round(x, base=ba))
+ygrouped2=yslice2.groupby(['xnormed'],as_index=False).agg({'dr':['mean','std']})
+ygrouped2.columns=['xnormed','dr','std']
+y2=ygrouped2.fillna(0)
+y2=y2
+
+yslice3['xnormed']=yslice3['xnormed'].apply(lambda x: custom_round(x, base=ba))
+ygrouped3=yslice3.groupby(['xnormed'],as_index=False).agg({'dr':['mean','std']})
+ygrouped3.columns=['xnormed','dr','std']
+y3=ygrouped3.fillna(0)
+y3=y3
+
+yslice4['xnormed']=yslice4['xnormed'].apply(lambda x: custom_round(x, base=ba))
+ygrouped4=yslice4.groupby(['xnormed'],as_index=False).agg({'dr':['mean','std']})
+ygrouped4.columns=['xnormed','dr','std']
+y4=ygrouped4.fillna(0) #replace NaNs with 0's
+y4=y4
+
+yslice5['xnormed']=yslice5['xnormed'].apply(lambda x: custom_round(x, base=ba))
+ygrouped5=yslice5.groupby(['xnormed'],as_index=False).agg({'dr':['mean','std']})
+ygrouped5.columns=['xnormed','dr','std']
+y5=ygrouped5.fillna(0) #replace NaNs with 0's
+y5=y5
+
+yslice6['xnormed']=yslice6['xnormed'].apply(lambda x: custom_round(x, base=ba))
+ygrouped6=yslice6.groupby(['xnormed'],as_index=False).agg({'dr':['mean','std']})
+ygrouped6.columns=['xnormed','dr','std']
+y6=ygrouped6.fillna(0) #replace NaNs with 0's
+y6=y6
+
+errors1= y1['std']
+errors2= y2['std']
+x1=y1['xnormed']*mmperpixel
+dr1=y1['dr']*framerate1*mmperpixel
+x2=y2['xnormed']*mmperpixel
+dr2=y2['dr']*framerate2*mmperpixel
+x3=y3['xnormed']*mmperpixel
+dr3=y3['dr']*framerate3*mmperpixel
+errors3= y3['std']
+errors4= y4['std']
+x4=y4['xnormed']*mmperpixel
+dr4=y4['dr']*framerate4*mmperpixel
+errors5= y5['std']
+x5=y5['xnormed']*mmperpixel
+dr5=y5['dr']*framerate5*mmperpixel
+errors6= y6['std']
+x6=y6['xnormed']*mmperpixel
+dr6=y6['dr']*framerate6*mmperpixel
+#convert to real units
+  
+def ReynoldsNumber(v):
+    '''A function that calculates the reynolds number of 8CB as a function of velocity
+       
+       Parameters
+       ----------
+       v: velocity in m/s
+       
+       Returns
+       -------
+       Re: Reynolds Number'''
+       
+    visc  = 0.052                #vescocity of 8CB in Pa s
+    L     = 0.02             #width of channel in m
+    pd    = 1000.0               #density of 8CB in kg m^-3
+    Re = v*L*pd/visc
+    return Re 
+
+vels = np.array([dr2.max(),dr4.max(),dr5.max(),dr1.max()])*1e-3
+ren = ReynoldsNumber(vels)
+print("The Reynolds Numbers range from {:.2f} to {:.2f}".format(ren.min(),ren.max()))
+    
+popt1, pcov = curve_fit(fit,x1,dr1)
+popt2, pcov = curve_fit(fit,x2,dr2)
+popt3, pcov = curve_fit(fit,x3,dr3)
+popt4, pcov = curve_fit(fit,x4,dr4)
+popt5, pcov = curve_fit(fit,x5,dr5)
+popt6, pcov = curve_fit(fit,x6,dr6)
+#find the coefficients for each set of data
+
+
+xs=np.linspace(-7,7,1000)
+
+ys1=fit(xs,popt1[0],popt1[1],popt1[2])
+ys2=fit(xs,popt2[0],popt2[1],popt2[2])
+ys3=fit(xs,popt3[0],popt3[1],popt3[2])
+ys4=fit(xs,popt4[0],popt4[1],popt4[2])
+ys5=fit(xs,popt5[0],popt5[1],popt5[2])
+ys6=fit(xs,popt6[0],popt6[1],popt6[2])
+#Fit the data
+with plt.style.context('prl'):
+    fig=plt.figure()
+    ax=fig.add_subplot(111)
+
+    #l1=ax.scatter(x1,dr1,color='r')
+    plt.errorbar(x1,dr1,yerr=errors1,color='orange',fmt='.',label =u'$v_0$ {:2.0f} mm/s'.format(np.max(ys1)))#label='7/13/17 Film 1')
+    plt.errorbar(x3,dr3,yerr=errors3,color='g',fmt='.',label='$v_0$ {:2.0f} mm/s'.format(np.max(ys3)))#label='4/11/17 Film 1')
+    plt.errorbar(x4,dr4,yerr=errors4,color='k',fmt='.',label='$v_0$ {:2.0f} mm/s'.format(np.max(ys4)))#label='6/6/17 Film 1')
+    plt.errorbar(x5,dr5,yerr=errors5,color='r',fmt='.',label='$v_0$ {:2.0f} mm/s'.format(np.max(ys5)))#label='6/6/17 Film 2')
+    plt.errorbar(x6,dr6,yerr=errors6,color='b',fmt='.',label='$v_0$ {:2.0f} mm/s'.format(np.max(ys6)))#label='3/17/17 Film 1')
+    #l2=ax.scatter(x2,dr2,color='b')
+    #plt.errorbar(x2,dr2,yerr=errors2,color='b',fmt='.',label='9/28/16 Film 2')
+    plt.plot(xs,ys1,color='orange')
+    #plt.plot(xs,ys2,color='b')
+    plt.plot(xs,ys3,color='g')
+    plt.plot(xs,ys4,color='k')
+    plt.plot(xs,ys5,color='r')
+    plt.plot(xs,ys6,color='b')
+    ax.xaxis.set_minor_locator(mpl.ticker.MultipleLocator(.5))
+    ax.yaxis.set_minor_locator(mpl.ticker.MultipleLocator(1))
+    plt.xlabel('distance from center-line (mm)')
+    plt.ylabel('velocity (mm/s)')
+    plt.ylim([0,17])
+    plt.xlim([-7,7])
+    #plt.ylim(0,5)
+    handles,labels = ax.get_legend_handles_labels()
+    handles = [h[0] if isinstance(h, mpl.container.ErrorbarContainer) else h for h in handles]
+    #need to order legend nicely
+    velTest = re.compile(' (\d+)')
+    velStrings = np.array([float(velTest.search(l)[1]) for l in labels]) 
+    velStringsSort =np.argsort(velStrings)
+    h = [(handles[i],labels[i]) for i in velStringsSort[::-1]]
+    handles,labels =list(map(list,zip(*h)))
+    sortedInletVelocity = [42.7,26.8,26.5,14.6,9.2]
+    labels = [u'$v_0$ {:1.1f} mm/s'.format(i) for i in sortedInletVelocity]
+    ax.legend(handles,labels,loc='best',frameon=False,labelspacing=.1,handletextpad=.1,fontsize=8)
+    plt.tight_layout()
+    
+    fig.savefig('perp-v2.png',dpi=600)
+    plt.show()

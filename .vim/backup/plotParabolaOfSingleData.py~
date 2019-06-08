@@ -1,0 +1,34 @@
+import glob
+import re
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+import numpy.polynomial.polynomial as poly
+
+mmperpixel=.0041033
+def custom_round(x, base=10):
+    return int(base * round(float(x)/base))#this sets the width of the bins
+
+
+fileName = "./Data/29JUN2017/Film1/1.441/t1valuematrix.csv"
+
+#now, read in file
+data =pd.read_csv(fileName)
+xmin = data['x'].min()
+xmax = data['x'].max()
+data['xbin'] = data['x'].apply(lambda x: custom_round(x, base=20))
+xgroup = data.groupby('xbin',as_index=False).agg({'dr':['mean','std'],'x':'mean'})
+xgroup.columns=['xbin','dr','std','x']
+results = poly.polyfit(xgroup['xbin'],xgroup['dr'],2,full=True)
+coeffs = results[0]
+res = results[1][0]
+(c0,c1,c2) = coeffs
+maxV = c0-c1**2/(2*c2)+c1**2/(4*c2)
+aveV = 2./3.*maxV
+xgroup.fillna(0)
+fig,ax = plt.subplots()
+ax.errorbar(xgroup['x'].values*mmperpixel,xgroup['dr']*mmperpixel,yerr=xgroup['std']*mmperpixel,fmt='.')
+plt.show()
+#print(filename)
+ 

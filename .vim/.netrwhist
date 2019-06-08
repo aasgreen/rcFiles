@@ -1,0 +1,11 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =9
+let g:netrw_dirhist_1='/mnt/c/Users/rings/Documents/Work/thesis/written'
+let g:netrw_dirhist_2='/mnt/c/Users/rings/Documents/Work/thesis'
+let g:netrw_dirhist_3='/mnt/c/Users/rings/Documents/Work/thesis/data'
+let g:netrw_dirhist_4='/mnt/c/Users/rings/Documents/Work/thesis/data/pal30'
+let g:netrw_dirhist_5='/mnt/c/Users/rings/Documents/Work/thesis/data/pal30/SAXS'
+let g:netrw_dirhist_6='/mnt/c/Users/rings/Documents/Work/thesis/data/pal30'
+let g:netrw_dirhist_7='/mnt/c/Users/rings/Documents/Work/thesis/data/pal30/PRC'
+let g:netrw_dirhist_8='/mnt/c/Users/rings/Documents/Work/thesis/data/pal30/PRC/2019-09-26-a4'
+let g:netrw_dirhist_9='.gnupg'
