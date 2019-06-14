@@ -175,6 +175,7 @@ set pastetoggle=<F2>
 let g:vimtex_view_method='zathura'
 let g:vimtex_complete_enabled=1
 let g:vimtex_complete_img_use_tail=1
+let g:vimtex_fold_enabled=1
 
 
 """Calender integration with google calender
@@ -193,3 +194,17 @@ function! ToggleCalendar()
   end
 endfunction
 :autocmd FileType vimwiki map c :call ToggleCalendar()
+
+set number
+
+
+"" syntastic settings
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_python_checkers=['flake8']
