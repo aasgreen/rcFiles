@@ -2,7 +2,18 @@
 
 "Sets how many lines of history VIM has to remeber
 filetype off
-execute pathogen#infect()
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'jnurmine/Zenburn'
+Plugin 'lervag/vimtex'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'plasticboy/vim-markdown'
+Plugin 'vimwiki/vimwiki'
+Plugin 'preservim/nerdtree'
+Plugin 'vim-syntastic/syntastic'
+call vundle#end()
 filetype plugin indent on
 set history=700
 let mapleader=','
@@ -136,7 +147,11 @@ let fortran_do_enddo=1
 set suffixesadd={str}
 "use markdown for vimwiki
 " vimwiki/vimwiki
-let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
+let g:vimwiki_list = [
+                        \{'path': '/mnt/c/Users/rings/Dropbox/Notes/', 'syntax': 'markdown', 'ext': '.md'},
+                        \{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md'},
+                        \{'diary_rel_path' : ' '}
+                        \]
 let g:vimwiki_global_ext = 0
 "" FocusMode
 function! ToggleFocusMode()
@@ -208,3 +223,8 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_python_checkers=['flake8']
+
+let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
+nnoremap <C-w>E :SyntasticCheck<CR>
+
+nmap <F6> :NERDTreeToggle<CR>
