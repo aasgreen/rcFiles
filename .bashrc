@@ -121,12 +121,22 @@ fi
 export PATH="/home/rings/anaconda3/lib:$PATH"
 
 #add support to windows for x system
+if  ipconfig.exe 2> /dev/null 
+then 
+    n=`ipconfig.exe | grep -n 'WSL' | grep -Po '^\d*' | awk '{print $1 + 4}'`
+    l=`ipconfig.exe | sed -n "${n}p" | grep -Po '\d*\.\d*\.\d*\.\d*'`
+    port=':0'
+    ll="${l}${port}"
+    export DISPLAY=$ll
+    echo $DISPLAY > ~/display_port.tmp
 
-n=`ipconfig.exe | grep -n 'WSL' | grep -Po '^\d*' | awk '{print $1 + 4}'`
-l=`ipconfig.exe | sed -n "${n}p" | grep -Po '\d*\.\d*\.\d*\.\d*'`
-port=':0'
-ll="${l}${port}"
-export DISPLAY=$ll
+else
+    DISPLAY=`(cat ~/display_port.tmp)`
+    echo $DISPLAY
+    export DISPLAY
+
+    echo 'reading display from file'
+fi
 
 #python alias
 alias torch='/mnt/c/Users/rings/Miniconda3/python.exe'
@@ -150,3 +160,14 @@ unset __conda_setup
 
 #ADD FOR CUDA COMPILERS:
 export PATH="$PATH:/opt/nvidia/hpc_sdk/Linux_x86_64/20.7/compilers/bin"
+
+#Add api keys
+GT_API_KEY_ALPHAVANTAGE=09USHHBTU7SDMZPN
+GT_API_KEY_REDDIT=Wa922LPKVe1oQROjcS9RxAM6s628WA
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+#docker clean up dangling images
+alias docker_rmi_dangling="docker rmi $(docker images -qa -f 'dangling=true')"

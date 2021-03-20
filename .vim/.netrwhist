@@ -1,9 +1,3 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =7
-let g:netrw_dirhist_1='/mnt/c/Users/rings/Documents/Work'
-let g:netrw_dirhist_2='/mnt/c/Users/rings/Documents/Work/quenching'
-let g:netrw_dirhist_3='/mnt/c/Users/rings/Documents/Work/quenching/autoDefect'
-let g:netrw_dirhist_4='/mnt/c/Users/rings/Documents/Work/quenching/autoDefect/2DDefectModel'
-let g:netrw_dirhist_5='/mnt/c/Users/rings/Documents/Work/quenching/autoDefect/2DDefectModel/fortran'
-let g:netrw_dirhist_6='/mnt/c/Users/rings/Documents/Work/quenching/autoDefect/2DDefectModel/fortran/MonteCarlo'
-let g:netrw_dirhist_7='/mnt/c/Users/rings/Documents/websites/mlfilms.github.io/_drafts'
+let g:netrw_dirhistcnt =1
+let g:netrw_dirhist_1='/mnt/d/als/Streamlit_stuff_and_data/splash-ml-master/examples/tag_notebook'

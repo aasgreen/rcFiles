@@ -13,6 +13,8 @@ Plugin 'plasticboy/vim-markdown'
 Plugin 'vimwiki/vimwiki'
 Plugin 'preservim/nerdtree'
 Plugin 'vim-syntastic/syntastic'
+"Plugin 'davidhalter/jedi-vim'
+Plugin 'tpope/vim-obsession'
 call vundle#end()
 filetype plugin indent on
 set history=700
@@ -30,6 +32,8 @@ set undofile
 
 set autoread
 
+"turn off bell
+set visualbell
 "Set scrolloff high so that the cursor stays in the middle of the screen --changed this, its getting annoying
 set so=5
 set colorcolumn=80
@@ -123,6 +127,10 @@ map k gk
 "nnoremap $ H
 "nnoremap ^ L
 
+"python code folding
+set foldmethod=indent
+nnoremap <space> za
+vnoremap <space> zf
 
 " Get rid of escape key
 
@@ -142,6 +150,9 @@ let fortran_free_source=1
 let fortran_have_tabs=1
 let fortran_more_precise=1
 let fortran_do_enddo=1
+
+let g:jedi#popup_on_dot = 0
+let g:jedi#completions_enabled = 0
 
 "navigating files
 set suffixesadd={str}
@@ -212,7 +223,6 @@ endfunction
 
 set number
 
-
 "" syntastic settings
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
@@ -228,3 +238,12 @@ let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_
 nnoremap <C-w>E :SyntasticCheck<CR>
 
 nmap <F6> :NERDTreeToggle<CR>
+
+" WSL yank support
+let s:clip = '/mnt/c/Windows/System32/clip.exe'  " change this path according to your mount point
+if executable(s:clip)
+    augroup WSLYank
+        autocmd!
+        autocmd TextYankPost * if v:event.operator ==# 'y' | call system(s:clip, @0) | endif
+    augroup END
+endif
