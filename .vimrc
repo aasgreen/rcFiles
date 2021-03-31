@@ -13,7 +13,7 @@ Plugin 'plasticboy/vim-markdown'
 Plugin 'vimwiki/vimwiki'
 Plugin 'preservim/nerdtree'
 Plugin 'vim-syntastic/syntastic'
-"Plugin 'davidhalter/jedi-vim'
+Plugin 'davidhalter/jedi-vim'
 Plugin 'tpope/vim-obsession'
 call vundle#end()
 filetype plugin indent on
@@ -65,7 +65,7 @@ syntax on
 
 "set omnifunc=syntaxcomplete#Complete
 
-colorscheme desert
+"colorscheme desert
 "set background=dark
 
 "Change colour scheme to zenburn
@@ -151,8 +151,8 @@ let fortran_have_tabs=1
 let fortran_more_precise=1
 let fortran_do_enddo=1
 
-let g:jedi#popup_on_dot = 0
-let g:jedi#completions_enabled = 0
+"let g:jedi#popup_on_dot = 0
+"let g:jedi#completions_enabled = 0
 
 "navigating files
 set suffixesadd={str}
