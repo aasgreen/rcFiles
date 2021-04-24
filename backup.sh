@@ -1,7 +1,7 @@
 
 #run script before updating to github
 
-fileList=(~/.tmux.conf ~/.vimrc ~/.bashrc)
+fileList=(~/.tmux.conf ~/.vimrc ~/.bashrc ~/.emacs.d ~/.doom.d)
 
 for file in "${fileList[@]}"
 do
